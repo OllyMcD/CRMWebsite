@@ -7,6 +7,12 @@
 
 <MudLayout>
     <MudAppBar Elevation="0">
+        <MudIconButton Icon="@Icons.Material.Filled.Home"
+                       Color="Color.Inherit"
+                       OnClick="@this.OpenHome"
+                       Title="Home" />
+        <MudSpacer />
+
         <MudText Typo="Typo.h6" Class="ml-3">Notice Board</MudText>
         <MudSpacer />
         @if (this.darkModeActive)
@@ -133,5 +139,10 @@
     void OpenSettings()
     {
         NavigationManager.NavigateTo("/settings");
+    }
+
+    void OpenHome()
+    {
+        NavigationManager.NavigateTo("/home");
     }
 }

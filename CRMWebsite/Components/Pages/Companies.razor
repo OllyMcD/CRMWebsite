@@ -21,12 +21,12 @@ else if (companies?.Items?.Count > 0)
         @foreach (var company in companies.Items)
         {
             <div class="company-card">
-                <h4>@company.Title</h4>
-                <p>Company Number: @company.CompanyNumber</p>
-                <p>Status: @company.CompanyStatus</p>
-                <p>Address: @company.AddressSnippet</p>
-                <p>Founded: @company.DateOfCreation.ToString("yyyy")</p>
-                <button @onclick="() => ViewDetails(company.CompanyNumber)">
+                <h4 style="color: black">@company.Title</h4>
+                <p style="color: black">Company Number: @company.CompanyNumber</p>
+                <p style="color: black">Status: @company.CompanyStatus</p>
+                <p style="color: black">Address: @company.AddressSnippet</p>
+                <p style="color: black">Founded: @company.DateOfCreation.ToString("yyyy")</p>
+                <button style="color: black" @onclick="() => ViewDetails(company.CompanyNumber)">
                     View Details
                 </button>
             </div>
