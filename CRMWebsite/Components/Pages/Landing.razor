@@ -1,0 +1,109 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-0 px-0">
+
+    <!-- Hero Section - Centered Logo -->
+    <div class="logo-container">
+        <MudImage Src="images/NotreDameLogo.png"
+                  Class="college-logo"
+                  Style="height: 180px; width: auto; border-radius: 12px;" />
+    </div>
+
+    <!-- Welcome Card -->
+    <MudPaper Elevation="6" Class="welcome-card">
+        <MudText Typo="Typo.h5" Class="text-center mb-3 welcome-title">
+            Welcome to the Notre Dame CRM
+        </MudText>
+
+        <MudText Class="text-center mb-5 welcome-desc">
+            This secure platform empowers Notre Dame staff and administrators to streamline operations—
+            including student data, enrolments, communication, and performance oversight. Built with clarity,
+            security, and efficiency at its core.
+        </MudText>
+
+        <MudDivider Class="my-4" />
+
+        <MudText Typo="Typo.body1" Class="text-center mb-4 welcome-subtext">
+            Sign in to access your dashboard and tools.
+        </MudText>
+
+        <MudGrid Justify="Justify.Center">
+            <MudItem xs="12" sm="6">
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           FullWidth="true"
+                           Size="Size.Large"
+                           StartIcon="@Icons.Material.Filled.Login"
+                           Class="hover-scale"
+                           OnClick="@(() => NavigationManager.NavigateTo("/login"))">
+                    Login
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <!-- Footer -->
+    <MudGrid Justify="Justify.Center" Class="mt-8">
+        <MudText Align="Align.Center" Typo="Typo.caption" Class="footer-text">
+            © Notre Dame CRM – May 2025 | Built for excellence in education
+        </MudText>
+    </MudGrid>
+
+</MudContainer>
+
+<style>
+    /* Updated Logo Container Styles */
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .college-logo {
+        object-fit: contain;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds subtle shadow */
+        border: 2px solid #f0f0f0; /* Optional: adds light border */
+    }
+
+    /* Welcome Card */
+    .welcome-card {
+        max-width: 700px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        margin: 0 auto;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .welcome-title {
+        color: #003366;
+        font-weight: 600;
+    }
+
+    .welcome-desc {
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .welcome-subtext {
+        color: #666;
+    }
+
+    /* Footer */
+    .footer-text {
+        color: #999;
+        font-size: 0.875rem;
+    }
+
+    /* Button Effect */
+    .hover-scale {
+        transition: transform 0.2s ease;
+    }
+
+        .hover-scale:hover {
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+</style>

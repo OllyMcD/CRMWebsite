@@ -13,7 +13,7 @@
                        Title="Home" />
         <MudSpacer />
 
-        <MudText Typo="Typo.h6" Class="ml-3">Notice Board</MudText>
+        <MudText Typo="Typo.h6" Class="notice-board-text">Notice Board</MudText>
         <MudSpacer />
         @if (this.darkModeActive)
         {
@@ -24,9 +24,9 @@
             <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Inherit" OnClick="@this.ToggleDarkMode" Title="To dark mode" />
         }
         <MudIconButton Icon="@Icons.Material.Filled.Settings"
-        Color="Color.Inherit"
-        OnClick="@this.OpenSettings"
-        Title="Settings" />
+                       Color="Color.Inherit"
+                       OnClick="@this.OpenSettings"
+                       Title="Settings" />
     </MudAppBar>
 
     <MudMainContent>
@@ -36,13 +36,20 @@
     </MudMainContent>
 </MudLayout>
 
+<style>
+    .notice-board-text {
+        margin-left: 2.5rem; /* Adjust this value to move the text more or less */
+    }
+</style>
+
 @code {
+    /* Rest of your existing code remains exactly the same */
     private static readonly MudTheme defaultTheme = new()
         {
             PaletteLight = new PaletteLight()
             {
-                Primary = "#003366",       // Notre Dame navy blue
-                Secondary = "#E67E22",     // Complementary orange
+                Primary = "#003366",
+                Secondary = "#E67E22",
                 AppbarBackground = "#003366",
                 AppbarText = "#FFFFFF",
                 Background = "#F5F5F5",
@@ -81,14 +88,12 @@
             }
         };
 
-
     private static readonly MudTheme darkTheme = new()
-    {
-            
+        {
             PaletteLight = new PaletteLight()
             {
-                Primary = "#4D88FF",       // Lighter blue for dark mode
-                Secondary = "#FFA726",     // Lighter orange for dark mode
+                Primary = "#4D88FF",
+                Secondary = "#FFA726",
                 AppbarBackground = "#121212",
                 AppbarText = "#FFFFFF",
                 Background = "#121212",
