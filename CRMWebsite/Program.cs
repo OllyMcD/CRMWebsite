@@ -1,6 +1,8 @@
 using CRMWebsite.Components;
 using CRMWebsite.Services;
 using MudBlazor.Services;
+using System.Net.Http.Headers;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddMudServices();
-builder.Services.AddHttpClient<CompaniesHouseService>();
+builder.Services.AddHttpClient<CompaniesHouseService>((provider, client) =>
+{
+    var config = provider.GetRequiredService<IConfiguration>();
+    var apiKey = config["CompaniesHouse:ApiKey"];
+    var authString = Convert.ToBase64String(Encoding.ASCII.GetBytes(apiKey + ":"));
+    client.BaseAddress = new Uri("https://api.company-information.service.gov.uk");
+    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authString);
+});
+
+
 
 // SCOPED
 

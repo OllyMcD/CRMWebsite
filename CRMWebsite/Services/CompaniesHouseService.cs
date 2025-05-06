@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CRMWebsite.Services;
 
@@ -10,34 +11,38 @@ public class CompaniesHouseService
     private const string BaseUrl = "https://api.company-information.service.gov.uk";
     private readonly string _apiKey; // Your API key
 
-    public CompaniesHouseService(HttpClient httpClient, IConfiguration configuration)
+    public CompaniesHouseService(HttpClient httpClient)
     {
         _httpClient = httpClient;
-        _httpClient.BaseAddress = new Uri(BaseUrl);
-        _apiKey = configuration["CompaniesHouse:ApiKey"]; // Get from appsettings.json
 
-        // Correct authentication header format
-        var authString = Convert.ToBase64String(Encoding.ASCII.GetBytes(_apiKey));
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authString);
+        //Test
+        //Console.WriteLine($"Companies House API Key: {_apiKey}");
+        //Console.WriteLine($"Authorization Header: {_httpClient.DefaultRequestHeaders.Authorization}");
     }
 
+
     public async Task<CompanySearchResult> SearchCompaniesAsync(string query,
-        string location = null, int itemsPerPage = 10)
+    string location = null, int itemsPerPage = 10)
     {
         try
         {
             var url = $"/search/companies?q={Uri.EscapeDataString(query)}&items_per_page={itemsPerPage}";
-
             if (!string.IsNullOrEmpty(location))
             {
                 url += $"&location={Uri.EscapeDataString(location)}";
             }
 
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
+            // Debugging the full request
+            //Console.WriteLine($"Request URL: {BaseUrl}{url}");
 
+            var response = await _httpClient.GetAsync(url);
+
+            // Debugging response status and content
+            //Console.WriteLine($"Response Status: {response.StatusCode}");
             var content = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Companies House API Key: {_apiKey}");
+            //Console.WriteLine($"Response Content: {content}");
+
+            response.EnsureSuccessStatusCode();
             return JsonSerializer.Deserialize<CompanySearchResult>(content);
         }
         catch (HttpRequestException ex)
@@ -47,6 +52,7 @@ public class CompaniesHouseService
             throw;
         }
     }
+
 
     public async Task<CompanyProfile> GetCompanyProfileAsync(string companyNumber)
     {
@@ -61,19 +67,32 @@ public class CompaniesHouseService
 // Model classes for the API responses
 public class CompanySearchResult
 {
+    [JsonPropertyName("items_per_page")]
     public int ItemsPerPage { get; set; }
+    
+    [JsonPropertyName("total_results")]
     public int TotalResults { get; set; }
-    public List<CompanySearchItem> Items { get; set; }
+
+    [JsonPropertyName("items")]
+    public List<CompanyItem> Items { get; set; }
 }
 
-public class CompanySearchItem
+public class CompanyItem
 {
-    public string? CompanyNumber { get; set; }
+    [JsonPropertyName("title")]
     public string? Title { get; set; }
+
+    [JsonPropertyName("company_number")]
+    public string? CompanyNumber { get; set; }
+
+    [JsonPropertyName("company_status")]
     public string? CompanyStatus { get; set; }
-    public string? AddressSnippet { get; set; }
-    public string? Description { get; set; }
+
+    [JsonPropertyName("date_of_creation")]
     public DateTime DateOfCreation { get; set; }
+
+    [JsonPropertyName("address_snippet")]
+    public string? AddressSnippet { get; set; }
 }
 
 public class CompanyProfile
