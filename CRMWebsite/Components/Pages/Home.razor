@@ -1,5 +1,6 @@
 ﻿@page "/home"
 @inject NavigationManager Navigation
+@inject ISnackbar ISnackbar
 @using MudBlazor
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
@@ -116,10 +117,10 @@
                       Variant="Variant.Filled"
                       Color="Color.Primary"
                       Size="Size.Large"
-                      StartIcon="@Icons.Material.Filled.Login"
-                      OnClick="@(() => NavigateTo("visits/log"))"
+                      StartIcon="@Icons.Material.Filled.PersonAdd"
+                      OnClick="@(() => NavigateTo("contacts/add"))"
                       Class="py-6">
-                Log Curriculum Visit
+                Add New Contact
             </MudButton>
         </MudItem>
         <MudItem xs="12" sm="6" md="3">
@@ -127,10 +128,10 @@
                       Variant="Variant.Filled"
                       Color="Color.Primary"
                       Size="Size.Large"
-                      StartIcon="@Icons.Material.Filled.Event"
-                      OnClick="@(() => NavigateTo("events/create"))"
+                      StartIcon="@Icons.Material.Filled.Assignment"
+                      OnClick="@(() => NavigateTo("reports/placements"))"
                       Class="py-6">
-                Create New Event
+                Placement Report
             </MudButton>
         </MudItem>
         <MudItem xs="12" sm="6" md="3">
@@ -138,10 +139,10 @@
                       Variant="Variant.Filled"
                       Color="Color.Primary"
                       Size="Size.Large"
-                      StartIcon="@Icons.Material.Filled.Search"
-                      OnClick="@(() => NavigateTo("search"))"
+                      StartIcon="@Icons.Material.Filled.Sync"
+                      OnClick="@RefreshDashboard"
                       Class="py-6">
-                Advanced Search
+                Refresh Data
             </MudButton>
         </MudItem>
     </MudGrid>
@@ -250,6 +251,18 @@
             _ => Color.Default
         };
     }
+
+    private async Task RefreshDashboard()
+{
+    // Add your refresh logic here
+    // For example:
+    // RecentActivities = await ActivityService.GetRecentActivitiesAsync();
+    // UpcomingEvents = await EventService.GetUpcomingEventsAsync();
+    StateHasChanged();
+    
+    // Temporary notification
+    ISnackbar.Add("Dashboard data refreshed", Severity.Success);
+}
 
     private string GetEventIcon(string type)
     {
