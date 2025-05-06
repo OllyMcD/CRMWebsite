@@ -1,33 +1,137 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
 
-@* Required *@
-<MudThemeProvider />
-<MudPopoverProvider />
-
-@* Needed for dialogs *@
+<MudThemeProvider Theme="@this.currentTheme" />
 <MudDialogProvider />
-
-@* Needed for snackbars *@
 <MudSnackbarProvider />
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudLayout>
+    <MudAppBar Elevation="0">
+        <MudText Typo="Typo.h6" Class="ml-3">Notice Board</MudText>
+        <MudSpacer />
+        @if (this.darkModeActive)
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.LightMode" Color="Color.Inherit" OnClick="@this.ToggleDarkMode" Title="To light mode" />
+        }
+        else
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Inherit" OnClick="@this.ToggleDarkMode" Title="To dark mode" />
+        }
+        <MudIconButton Icon="@Icons.Material.Filled.Settings"
+        Color="Color.Inherit"
+        OnClick="@this.OpenSettings"
+        Title="Settings" />
+    </MudAppBar>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
             @Body
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
+@code {
+    private static readonly MudTheme defaultTheme = new()
+        {
+            PaletteLight = new PaletteLight()
+            {
+                Primary = "#003366",       // Notre Dame navy blue
+                Secondary = "#E67E22",     // Complementary orange
+                AppbarBackground = "#003366",
+                AppbarText = "#FFFFFF",
+                Background = "#F5F5F5",
+                Surface = "#FFFFFF",
+                TextPrimary = "#212121",
+                TextSecondary = "#757575",
+                Success = "#2E7D32"
+            },
+            Typography = new Typography()
+            {
+                Default = new DefaultTypography()
+                {
+                    FontFamily = new[] { "Segoe UI", "Helvetica", "Arial", "sans-serif" },
+                    FontSize = "0.875rem",
+                    FontWeight = "400",
+                    LineHeight = "1.43",
+                    LetterSpacing = "0.01071em"
+                },
+                H1 = new H1Typography()
+                {
+                    FontSize = "2.5rem",
+                    FontWeight = "500",
+                    LineHeight = "1.167"
+                },
+                H6 = new H6Typography()
+                {
+                    FontSize = "1.25rem",
+                    FontWeight = "500",
+                    LineHeight = "1.6"
+                }
+            },
+            LayoutProperties = new LayoutProperties()
+            {
+                DefaultBorderRadius = "4px",
+                DrawerWidthRight = "260px"
+            }
+        };
+
+
+    private static readonly MudTheme darkTheme = new()
+    {
+            
+            PaletteLight = new PaletteLight()
+            {
+                Primary = "#4D88FF",       // Lighter blue for dark mode
+                Secondary = "#FFA726",     // Lighter orange for dark mode
+                AppbarBackground = "#121212",
+                AppbarText = "#FFFFFF",
+                Background = "#121212",
+                Surface = "#1E1E1E",
+                TextPrimary = "#E0E0E0",
+                TextSecondary = "#B0B0B0",
+                Success = "#81C784"
+            },
+            Typography = new Typography()
+            {
+                Default = new DefaultTypography()
+                {
+                    FontFamily = new[] { "Segoe UI", "Helvetica", "Arial", "sans-serif" },
+                    FontSize = "0.875rem",
+                    FontWeight = "400",
+                    LineHeight = "1.43",
+                    LetterSpacing = "0.01071em"
+                },
+                H1 = new H1Typography()
+                {
+                    FontSize = "2.5rem",
+                    FontWeight = "500",
+                    LineHeight = "1.167"
+                },
+                H6 = new H6Typography()
+                {
+                    FontSize = "1.25rem",
+                    FontWeight = "500",
+                    LineHeight = "1.6"
+                }
+            },
+            LayoutProperties = new LayoutProperties()
+            {
+                DefaultBorderRadius = "4px",
+                DrawerWidthRight = "260px"
+            }
+        };
+
+    private bool darkModeActive = false;
+    private MudTheme currentTheme = defaultTheme;
+
+    void ToggleDarkMode()
+    {
+        this.darkModeActive = !this.darkModeActive;
+        this.currentTheme = this.darkModeActive ? darkTheme : defaultTheme;
+    }
+
+    void OpenSettings()
+    {
+        NavigationManager.NavigateTo("/settings");
+    }
+}

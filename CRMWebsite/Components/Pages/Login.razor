@@ -1,5 +1,46 @@
-﻿<h3>Login</h3>
+﻿@page "/login"
+@inject NavigationManager NavigationManager
 
-@code {
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-8 px-4">
 
-}
+    <MudPaper Elevation="6" Class="pa-6 login-card">
+        <MudText Typo="Typo.h5" Class="text-center mb-4 login-title">
+            Login to Notre Dame CRM
+        </MudText>
+
+        <MudStack Spacing="2" AlignItems="AlignItems.Center">
+            <!-- Microsoft 365 Placeholder -->
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Secondary"
+                       FullWidth="true"
+                       StartIcon="@Icons.Material.Filled.AccountCircle"
+                       Disabled="true">
+                Login with Microsoft 365
+            </MudButton>
+
+            <!-- Backup login -->
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       FullWidth="true"
+                       StartIcon="@Icons.Material.Filled.Login"
+                       OnClick="@(() => NavigationManager.NavigateTo("/home"))">
+                Continue as Guest
+            </MudButton>
+        </MudStack>
+    </MudPaper>
+</MudContainer>
+
+<style>
+    .login-card {
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 12px;
+        background-color: #ffffff;
+    }
+
+    .login-title {
+        color: #003366;
+        font-weight: 600;
+    }
+</style>

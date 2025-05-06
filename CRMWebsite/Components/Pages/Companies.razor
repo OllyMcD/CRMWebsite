@@ -1,5 +1,87 @@
-﻿<h3>Companies</h3>
+﻿@page "/companies"
+@using CRMWebsite.Services
+@inject NavigationManager NavigationManager
+@inject CompaniesHouseService CompaniesService
+
+<h3>Find Companies for Work Experience</h3>
+
+<div class="search-box">
+    <input @bind="searchTerm" placeholder="Enter industry or company name" />
+    <input @bind="location" placeholder="Location (optional)" />
+    <button @onclick="Search" class="btn btn-primary">Search</button>
+</div>
+
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+else if (companies?.Items?.Count > 0)
+{
+    <div class="company-list">
+        @foreach (var company in companies.Items)
+        {
+            <div class="company-card">
+                <h4>@company.Title</h4>
+                <p>Company Number: @company.CompanyNumber</p>
+                <p>Status: @company.CompanyStatus</p>
+                <p>Address: @company.AddressSnippet</p>
+                <p>Founded: @company.DateOfCreation.ToString("yyyy")</p>
+                <button @onclick="() => ViewDetails(company.CompanyNumber)">
+                    View Details
+                </button>
+            </div>
+        }
+    </div>
+}
+else if (!string.IsNullOrEmpty(searchTerm) && !isLoading)
+{
+    <p>No companies found. Try a different search term.</p>
+}
 
 @code {
+    private string searchTerm = "technology";
+    private string? location;
+    private CompanySearchResult companies;
+    private bool isLoading;
 
+    private async Task Search()
+    {
+        isLoading = true;
+        companies = await CompaniesService.SearchCompaniesAsync(searchTerm, location);
+        isLoading = false;
+    }
+
+    private void ViewDetails(string companyNumber)
+    {
+        // Navigate to company details page
+        NavigationManager.NavigateTo($"/company/{companyNumber}");
+    }
 }
+
+    <style>
+
+    .search-box {
+        margin: 20px 0;
+        display: flex;
+        gap: 10px;
+    }
+
+    .company-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .company-card {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+        background: white;
+    }
+
+        .company-card h4 {
+            margin-top: 0;
+            color: #1a5276;
+        }
+    </style>

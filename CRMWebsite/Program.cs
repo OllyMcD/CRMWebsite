@@ -1,13 +1,18 @@
 using CRMWebsite.Components;
+using CRMWebsite.Services;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// COMPONENTS AND CLIENTS
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
 builder.Services.AddMudServices();
+builder.Services.AddHttpClient<CompaniesHouseService>();
+
+// SCOPED
+
+// SINGLETON
 
 var app = builder.Build();
 

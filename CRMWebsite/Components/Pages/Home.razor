@@ -1,7 +1,285 @@
 ﻿@page "/home"
+@inject NavigationManager Navigation
+@using MudBlazor
 
-<PageTitle>Home</PageTitle>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <!-- Header with Logo/Title -->
+    <MudGrid Class="mb-6">
+        <MudItem xs="12" md="6">
+            <MudText Typo="Typo.h4"> Notre Dame CRM</MudText>
+            <MudText Typo="Typo.h6"> Client Relationship Management System</MudText>
+        </MudItem>
+        <MudItem xs="12" md="6" Class="d-flex justify-md-end">
+            <MudChipSet T="string">
+                <MudChip Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Material.Filled.Verified">Ofsted Outstanding</MudChip>
+            </MudChipSet>
+        </MudItem>
+    </MudGrid>
 
-<h1>Hello, world!</h1>
+    <MudDivider Class="my-6" />
 
-Welcome to your new app.
+    <!-- Quick Stats Section -->
+    <MudGrid Class="mb-8">
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 text-center" Elevation="1">
+                <MudText Typo="Typo.h6">Active Organizations</MudText>
+                <MudText Typo="Typo.h4" Class="my-2">142</MudText>
+                <MudText Typo="Typo.caption">Last updated: @DateTime.Now.ToString("HH:mm")</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 text-center" Elevation="1">
+                <MudText Typo="Typo.h6">Recent Contacts</MudText>
+                <MudText Typo="Typo.h4" Class="my-2">24</MudText>
+                <MudText Typo="Typo.caption">This week</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 text-center" Elevation="1">
+                <MudText Typo="Typo.h6">Upcoming Events</MudText>
+                <MudText Typo="Typo.h4" Class="my-2">7</MudText>
+                <MudText Typo="Typo.caption">Next 14 days</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 text-center" Elevation="1">
+                <MudText Typo="Typo.h6">Placements</MudText>
+                <MudText Typo="Typo.h4" Class="my-2">38</MudText>
+                <MudText Typo="Typo.caption">Current active</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Main Actions -->
+    <MudText Typo="Typo.h6" Class="mb-4">QUICK ACTIONS</MudText>
+    <MudGrid Class="mb-8">
+        <MudItem xs="12" sm="6" md="3">
+            <MudButton FullWidth="true"
+                      Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      Size="Size.Large"
+                      StartIcon="@Icons.Material.Filled.AddBusiness"
+                      OnClick="@(() => NavigateTo("organizations/add"))"
+                      Class="py-6">
+                Add New Organization
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudButton FullWidth="true"
+                      Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      Size="Size.Large"
+                      StartIcon="@Icons.Material.Filled.Login"
+                      OnClick="@(() => NavigateTo("visits/log"))"
+                      Class="py-6">
+                Log Curriculum Visit
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudButton FullWidth="true"
+                      Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      Size="Size.Large"
+                      StartIcon="@Icons.Material.Filled.Event"
+                      OnClick="@(() => NavigateTo("events/create"))"
+                      Class="py-6">
+                Create New Event
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudButton FullWidth="true"
+                      Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      Size="Size.Large"
+                      StartIcon="@Icons.Material.Filled.Search"
+                      OnClick="@(() => NavigateTo("search"))"
+                      Class="py-6">
+                Advanced Search
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid Class="mb-8">
+        <MudItem xs="12" sm="6" md="3">
+            <MudButton FullWidth="true"
+                      Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      Size="Size.Large"
+                      StartIcon="@Icons.Material.Filled.AllInbox"
+                      OnClick="@(() => NavigateTo("companies"))"
+                      Class="py-6">
+                View all companies
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudButton FullWidth="true"
+                      Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      Size="Size.Large"
+                      StartIcon="@Icons.Material.Filled.Login"
+                      OnClick="@(() => NavigateTo("visits/log"))"
+                      Class="py-6">
+                Log Curriculum Visit
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudButton FullWidth="true"
+                      Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      Size="Size.Large"
+                      StartIcon="@Icons.Material.Filled.Event"
+                      OnClick="@(() => NavigateTo("events/create"))"
+                      Class="py-6">
+                Create New Event
+            </MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudButton FullWidth="true"
+                      Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      Size="Size.Large"
+                      StartIcon="@Icons.Material.Filled.Search"
+                      OnClick="@(() => NavigateTo("search"))"
+                      Class="py-6">
+                Advanced Search
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Recent Activity Section -->
+    <MudText Typo="Typo.h6" Class="mb-4">RECENT ACTIVITY</MudText>
+    <MudPaper Class="pa-4 mb-8" Elevation="1">
+        <MudTable Items="@RecentActivities" Hover="true" Class="elevation-1">
+            <HeaderContent>
+                <MudTh>Date</MudTh>
+                <MudTh>Organization</MudTh>
+                <MudTh>Contact</MudTh>
+                <MudTh>Type</MudTh>
+                <MudTh>Staff Member</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Date">@context.Date.ToString("dd MMM yyyy")</MudTd>
+                <MudTd DataLabel="Organization">
+                    <MudLink Href="@($"organizations/{context.OrganizationId}")" Typo="Typo.body2">@context.Organization</MudLink>
+                </MudTd>
+                <MudTd DataLabel="Contact">@context.Contact</MudTd>
+                <MudTd DataLabel="Type">
+                    <MudChip T="object" Color="@GetColorForType(context.Type)" Size="Size.Small">@context.Type</MudChip>
+                </MudTd>
+                <MudTd DataLabel="Staff Member">@context.StaffMember</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+
+    <!-- Upcoming Events -->
+    <MudText Typo="Typo.h6" Class="mb-4">UPCOMING EVENTS</MudText>
+    <MudGrid Class="mb-8">
+        @foreach (var evt in UpcomingEvents)
+        {
+            <MudItem xs="12" sm="6" md="4" Class="mb-4">
+                <MudCard Elevation="3">
+                    <MudCardHeader Style="align-items:center">
+                        <header style="padding:inherit">
+                            <MudIcon Icon="@GetEventIcon(evt.Type)" Size="Size.Large" />
+                        </header>
+                        <header>
+                            <MudText Typo="Typo.subtitle1">@evt.Title</MudText>
+                            <MudText Typo="Typo.body2">@evt.Date.ToString("dd MMM yyyy HH:mm")</MudText>
+                        </Header>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText Typo="Typo.body2">@evt.Description</MudText>
+                        <MudChipSet T="string" Class="mt-2">
+                            <MudChip Text="@evt.Organization" Color="Color.Info" Variant="Variant.Outlined" Size="Size.Small" />
+                            <MudChip Text="@evt.Type" Color="Color.Secondary" Variant="Variant.Outlined" Size="Size.Small" />
+                        </MudChipSet>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" EndIcon="@Icons.Material.Filled.ArrowForward" 
+                                  OnClick="@(() => NavigateTo($"events/{evt.Id}"))">
+                            View Details
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+
+    <!-- Footer -->
+    <MudDivider Class="my-6" />
+    <MudGrid>
+        <MudItem xs="12" md="6">
+            <MudText Typo="Typo.caption">© @DateTime.Now.Year Notre Dame Catholic Sixth Form College</MudText>
+        </MudItem>
+        <MudItem xs="12" md="6" Class="d-flex justify-md-end">
+            <MudText Typo="Typo.caption">Version 1.0.0 | Last updated: @DateTime.Now.ToString("HH:mm")</MudText>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    // Sample data - replace with actual data service calls
+    private List<ActivityRecord> RecentActivities = new()
+    {
+        new ActivityRecord { Date = DateTime.Now.AddDays(-1), Organization = "Leeds Beckett University", OrganizationId = "1", Contact = "Dr. Sarah Johnson", Type = "Curriculum Talk", StaffMember = "John Smith" },
+        new ActivityRecord { Date = DateTime.Now.AddDays(-2), Organization = "KPMG UK", OrganizationId = "2", Contact = "Michael Brown", Type = "Work Experience", StaffMember = "Emma Wilson" },
+        new ActivityRecord { Date = DateTime.Now.AddDays(-3), Organization = "NHS Leeds", OrganizationId = "3", Contact = "Dr. Lisa Wong", Type = "T-Level Placement", StaffMember = "David Taylor" },
+        new ActivityRecord { Date = DateTime.Now.AddDays(-4), Organization = "Sky Betting & Gaming", OrganizationId = "4", Contact = "James Wilson", Type = "Careers Fair", StaffMember = "Sarah Johnson" },
+    };
+
+    private List<EventRecord> UpcomingEvents = new()
+    {
+        new EventRecord { Id = "1", Title = "STEM Careers Fair", Date = DateTime.Now.AddDays(3), Description = "Annual STEM careers fair with 20+ employers", Organization = "Multiple", Type = "Careers Fair" },
+        new EventRecord { Id = "2", Title = "University Open Day", Date = DateTime.Now.AddDays(7), Description = "University of Leeds campus visit", Organization = "University of Leeds", Type = "Curriculum Visit" },
+        new EventRecord { Id = "3", Title = "T-Level Employer Meeting", Date = DateTime.Now.AddDays(10), Description = "Planning meeting for T-Level placements", Organization = "PwC", Type = "Meeting" },
+    };
+
+    private void NavigateTo(string route)
+    {
+        Navigation.NavigateTo($"/{route.ToLower()}");
+    }
+
+    private Color GetColorForType(string type)
+    {
+        return type switch
+        {
+            "Curriculum Talk" => Color.Info,
+            "Work Experience" => Color.Success,
+            "T-Level Placement" => Color.Warning,
+            "Careers Fair" => Color.Secondary,
+            _ => Color.Default
+        };
+    }
+
+    private string GetEventIcon(string type)
+    {
+        return type switch
+        {
+            "Careers Fair" => Icons.Material.Filled.Work,
+            "Curriculum Visit" => Icons.Material.Filled.School,
+            "Meeting" => Icons.Material.Filled.People,
+            _ => Icons.Material.Filled.Event
+        };
+    }
+
+    // Data models
+    private class ActivityRecord
+    {
+        public DateTime Date { get; set; }
+        public string? Organization { get; set; }
+        public string? OrganizationId { get; set; }
+        public string? Contact { get; set; }
+        public string? Type { get; set; }
+        public string? StaffMember { get; set; }
+    }
+
+    private class EventRecord
+    {
+        public string? Id { get; set; }
+        public string? Title { get; set; }
+        public DateTime Date { get; set; }
+        public string? Description { get; set; }
+        public string? Organization { get; set; }
+        public string? Type { get; set; }
+    }
+}

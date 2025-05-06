@@ -1,88 +1,134 @@
 ﻿@page "/"
-@using MudBlazor
+@inject NavigationManager NavigationManager
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-    <!-- Header with Logo/Title -->
-    <MudText Typo="Typo.h4" Class="text-center mb-6" Style="color: #003366;">Notice Dame</MudText>
-    <MudText Typo="Typo.h6" Class="text-center mb-8" Style="color: #003366;">CATHOLIC SIXTH FORM COLLEGE</MudText>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-0 px-0">
 
-    <MudDivider Class="my-6" />
+    <!-- Hero Section -->
+    <div class="hero-banner">
+        <div class="hero-overlay"></div>
+        <div class="hero-text">
+            <MudText Typo="Typo.h3" Class="hero-title">Notre Dame CRM</MudText>
+            <MudText Typo="Typo.subtitle1" Class="hero-subtitle">Catholic Sixth Form College</MudText>
+        </div>
+    </div>
 
-    <!-- Welcome Section -->
-    <MudPaper Class="pa-6 mb-8" Elevation="5">
-        <MudText Typo="Typo.h5" Class="text-center mb-4" Style="color: #003366;">WELCOME TO YOUR 'OUTSTANDING' SIXTH FORM COLLEGE</MudText>
-        <MudText Class="text-center">
-            Notre Dame Catholic Sixth Form College is one of the highest-performing colleges in West Yorkshire.
-            We are an "Outstanding" Leeds sixth form college and offer a wide range of A Levels, BTEC and T Level
-            qualifications for school leavers.
+    <!-- Welcome Card -->
+    <MudPaper Elevation="6" Class="welcome-card">
+        <MudText Typo="Typo.h5" Class="text-center mb-3 welcome-title">
+            Welcome to the Notre Dame CRM
         </MudText>
+
+        <MudText Class="text-center mb-5 welcome-desc">
+            This secure platform empowers Notre Dame staff and administrators to streamline operations—
+            including student data, enrolments, communication, and performance oversight. Built with clarity,
+            security, and efficiency at its core.
+        </MudText>
+
+        <MudDivider Class="my-4" />
+
+        <MudText Typo="Typo.body1" Class="text-center mb-4 welcome-subtext">
+            Sign in to access your dashboard and tools.
+        </MudText>
+
+        <MudGrid Justify="Justify.Center">
+            <MudItem xs="12" sm="6">
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           FullWidth="true"
+                           Size="Size.Large"
+                           StartIcon="@Icons.Material.Filled.Login"
+                           Class="hover-scale"
+                           OnClick="@(() => NavigationManager.NavigateTo("/login"))">
+                    Login
+                </MudButton>
+            </MudItem>
+        </MudGrid>
     </MudPaper>
 
-    <MudDivider Class="my-6" />
-
-    <!-- Videos Section -->
-    <MudText Typo="Typo.h6" Class="text-center mb-4" Style="color: #003366;">WATCH OUR COLLEGE VIDEOS</MudText>
-    <MudGrid Justify="Justify.Center" Class="mb-8">
-        <MudItem xs="12" sm="6" md="4">
-            <MudCard Class="pa-4" Elevation="5">
-                <MudCardContent>
-                    <!-- Placeholder for video -->
-                    <div class="video-placeholder" style="height: 200px; background-color: #eee; display: flex; align-items: center; justify-content: center;">
-                        <MudIcon Icon="@Icons.Material.Filled.PlayCircleOutline" Size="Size.Large" />
-                    </div>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
-
-    <MudDivider Class="my-6" />
-
-    <!-- About Us Navigation -->
-    <MudText Typo="Typo.h6" Class="text-center mb-4" Style="color: #003366;">ABOUT US</MudText>
-    <MudGrid Justify="Justify.Center" Class="mb-8">
-        <MudItem xs="12" sm="6" md="3">
-            <MudPaper Class="pa-4 text-center" Elevation="3" Style="cursor: pointer;" OnClick="@(() => NavigateTo("#why-choose-us"))">
-                <MudIcon Icon="@Icons.Material.Filled.Star" Size="Size.Large" Color="Color.Primary" />
-                <MudText Typo="Typo.subtitle1">WHY CHOOSE US?</MudText>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="12" sm="6" md="3">
-            <MudPaper Class="pa-4 text-center" Elevation="3" Style="cursor: pointer;" OnClick="@(() => NavigateTo("#courses"))">
-                <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Large" Color="Color.Primary" />
-                <MudText Typo="Typo.subtitle1">COURSES</MudText>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="12" sm="6" md="3">
-            <MudPaper Class="pa-4 text-center" Elevation="3" Style="cursor: pointer;" OnClick="@(() => NavigateTo("#support"))">
-                <MudIcon Icon="@Icons.Material.Filled.Support" Size="Size.Large" Color="Color.Primary" />
-                <MudText Typo="Typo.subtitle1">SUPPORT</MudText>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="12" sm="6" md="3">
-            <MudPaper Class="pa-4 text-center" Elevation="3" Style="cursor: pointer;" OnClick="@(() => NavigateTo("#news"))">
-                <MudIcon Icon="@Icons.Material.Filled.Newspaper" Size="Size.Large" Color="Color.Primary" />
-                <MudText Typo="Typo.subtitle1">NEWS & EVENTS</MudText>
-            </MudPaper>
-        </MudItem>
-    </MudGrid>
-
-    <MudDivider Class="my-6" />
-
-    <!-- Ofsted Badge -->
-    <MudPaper Class="pa-4 text-center mb-8" Elevation="5" Style="background-color: #003366; color: white;">
-        <MudText Typo="Typo.h6">Ofsted Outstanding</MudText>
-    </MudPaper>
+    <br />
 
     <!-- Footer -->
-    <MudDivider Class="my-6" />
-    <MudText Typo="Typo.caption" Class="text-center">© May 2025</MudText>
-    <MudText Typo="Typo.caption" Class="text-center">The 1021 (Local time)</MudText>
+    <MudGrid Justify="Justify.Center">
+        <MudText Align="Align.Center" Typo="Typo.caption" Class="footer-text mt-8 mb-4">
+            © Notre Dame CRM – May 2025 | Built for excellence in education
+        </MudText>
+    </MudGrid>
+
 </MudContainer>
 
-@code {
-    private void NavigateTo(string anchor)
-    {
-        // Implement navigation logic here
-        // For example, scroll to section or navigate to another page
+<style>
+    .hero-banner {
+        background: url('/images/crm-hero-placeholder.jpg') center/fixed no-repeat, #e0e0e0;
+        height: 300px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
     }
-}
+
+    .hero-overlay {
+        background-color: rgba(0, 0, 0, 0.4);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    .hero-text {
+        z-index: 1;
+        text-align: center;
+    }
+
+    .hero-title {
+        color: white;
+        font-weight: 600;
+    }
+
+    .hero-subtitle {
+        color: #f3f3f3;
+    }
+
+    .welcome-card {
+        max-width: 700px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        margin-top: 1.5rem;
+        padding: 1.5rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .welcome-title {
+        color: #003366;
+        font-weight: 600;
+    }
+
+    .welcome-desc {
+        color: #555;
+    }
+
+    .welcome-subtext {
+        color: #666;
+    }
+
+    .footer-text {
+        color: #999;
+        width: 100%;
+        text-align: center;
+    }
+
+
+    .hover-scale {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+</style>
