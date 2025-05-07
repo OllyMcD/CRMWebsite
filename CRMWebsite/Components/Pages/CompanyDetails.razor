@@ -1,0 +1,324 @@
+﻿@page "/companies/{companyNumber}"
+@using CRMWebsite.Services
+@inject NavigationManager NavigationManager
+@inject CompaniesHouseService CompaniesHouseService
+
+<div class="company-details-container">
+    <div class="header-section">
+        <button class="back-button" @onclick="NavigateBack">
+            <i class="fas fa-arrow-left"></i> Back to Search
+        </button>
+        <h2>Company Profile</h2>
+    </div>
+
+    @if (companyProfile != null)
+    {
+        <div class="profile-card">
+            <!-- Basic Info Section -->
+            <div class="basic-info">
+                <h3>@companyProfile.Name</h3>
+                <div class="company-meta">
+                    <span class="badge status-badge">@companyProfile.Status</span>
+                    <span class="badge type-badge">@companyProfile.CompanyType</span>
+                    <span>Company No: @companyProfile.CompanyNumber</span>
+                    <span>Founded: @companyProfile.IncorporationDate?.ToString("yyyy")</span>
+                </div>
+            </div>
+
+            <!-- Industry Section -->
+            @if (companyProfile.IndustryCodes.Any() || !string.IsNullOrEmpty(companyProfile.IndustryDescription))
+            {
+                <div class="info-section">
+                    <h4><i class="fas fa-industry"></i> Industry</h4>
+                    @if (!string.IsNullOrEmpty(companyProfile.IndustryDescription))
+                    {
+                        <p>@companyProfile.IndustryDescription</p>
+                    }
+                    @if (companyProfile.IndustryCodes.Any())
+                    {
+                        <div class="sic-codes">
+                            <strong>SIC Codes:</strong>
+                            @foreach (var codez in companyProfile.IndustryCodes)
+                            {
+                                <span class="sic-badge">@codez</span>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+
+            <!-- Address Section -->
+            @if (companyProfile.RegisteredAddress != null)
+            {
+                <div class="info-section">
+                    <h4><i class="fas fa-map-marker-alt"></i> Registered Address</h4>
+                    <p>@companyProfile.RegisteredAddress.FullAddress</p>
+                </div>
+            }
+
+            <!-- Other Section -->
+            @if (companyProfile.UkEstablishments != null)
+            {
+                <div class="info-section">
+                    <h4><i class="fas fa-map-marker-alt"></i> Establishments</h4>
+                    <p>@companyProfile.UkEstablishments</p>
+                </div>
+            }
+
+            @if (companyProfile.Charges != null)
+            {
+                <div class="info-section">
+                    <h4><i class="fas fa-map-marker-alt"></i> Charges</h4>
+                    <p>@companyProfile.Charges</p>
+                </div>
+            }
+
+            <!-- Contact Section -->
+            <div class="info-section">
+                <h4><i class="fas fa-envelope"></i> Contact</h4>
+                @if (!string.IsNullOrEmpty(companyProfile.Website))
+                {
+                    <p>
+                        <strong>Website:</strong> 
+                        <a href="@(companyProfile.Website.StartsWith("http") ? companyProfile.Website : "https://" + companyProfile.Website)" 
+                           target="_blank" rel="noopener">
+                            @companyProfile.Website
+                        </a>
+                    </p>
+                }
+                else
+                {
+                    <p class="text-muted">No website listed</p>
+                }
+            </div>
+
+            <!-- Size Indicator -->
+            @if (companyProfile.EstimatedEmployees.HasValue)
+            {
+                <div class="info-section">
+                    <h4><i class="fas fa-users"></i> Company Size</h4>
+                    <p>Estimated employees: @companyProfile.EstimatedEmployees</p>
+                </div>
+            }
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary">
+                <i class="fas fa-bookmark"></i> Save for Placement
+            </button>
+            <button class="btn btn-outline-primary">
+                <i class="fas fa-share-alt"></i> Share
+            </button>
+        </div>
+    }
+    else if (isLoading)
+    {
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <p>Loading company details...</p>
+        </div>
+    }
+    else if (errorMessage != null)
+    {
+        <div class="error-container">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>@errorMessage</p>
+            <button class="btn btn-secondary" @onclick="RetryLoading">
+                Try Again
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string? companyNumber { get; set; }
+
+    private CompanyProfile? companyProfile;
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCompanyData();
+    }
+
+    private async Task LoadCompanyData()
+    {
+        isLoading = true;
+        errorMessage = null;
+        StateHasChanged();
+
+        try
+        {
+            companyProfile = await CompaniesHouseService.GetCompanyProfileAsync(companyNumber);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Could not load company details. {(ex.Message.Contains("404") ? "Company not found." : "Please try again later.")}";
+            Console.Error.WriteLine($"Error fetching company profile: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("/companies");
+    }
+
+    private void RetryLoading()
+    {
+        _ = LoadCompanyData();
+    }
+}
+
+<style>
+
+    .company-details-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .header-section {
+        margin-bottom: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+    .back-button {
+        position: absolute;
+        left: 0;
+        background: none;
+        border: none;
+        color: #007bff;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    .basic-info {
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .company-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-top: 10px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .status-badge {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .type-badge {
+        background-color: #e8f5e9;
+        color: #388e3c;
+    }
+
+    .info-section {
+        margin-bottom: 20px;
+    }
+
+    .info-section h4 {
+        color: #444;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-section p {
+        margin-left: 28px;
+        color: #555;
+    }
+
+    .sic-codes {
+        margin-left: 28px;
+        margin-top: 5px;
+    }
+
+    .sic-badge {
+        display: inline-block;
+        background: #f5f5f5;
+        padding: 3px 8px;
+        border-radius: 4px;
+        margin-right: 5px;
+        font-family: monospace;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .loading-container {
+        text-align: center;
+        padding: 40px;
+    }
+
+    .spinner {
+        border: 4px solid rgba(0,0,0,0.1);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border-left-color: #007bff;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 15px;
+    }
+
+    .error-container {
+        text-align: center;
+        padding: 30px;
+        color: #dc3545;
+    }
+
+    .error-container i {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    @@keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @@media (max-width: 768px) {
+        .company-details-container {
+            padding: 15px;
+        }
+        
+        .back-button {
+            position: relative;
+            margin-bottom: 15px;
+            left: auto;
+        }
+    }
+</style>

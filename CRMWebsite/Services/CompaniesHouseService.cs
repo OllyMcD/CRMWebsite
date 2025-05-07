@@ -117,10 +117,62 @@ public class CompanyItem
 
 public class CompanyProfile
 {
-    public string? CompanyName { get; set; }
+    [JsonPropertyName("company_name")]
+    public string? Name { get; set; }
+
+    [JsonPropertyName("company_number")]
     public string? CompanyNumber { get; set; }
-    public string? RegisteredOfficeAddress { get; set; }
-    public string? CompanyStatus { get; set; }
+
+    [JsonPropertyName("registered_office_address")]
+    public Address? RegisteredAddress { get; set; }
+
+    [JsonPropertyName("company_status")]
+    public string? Status { get; set; }
+
+    [JsonPropertyName("company_type")]
     public string? CompanyType { get; set; }
+
+    [JsonPropertyName("date_of_creation")]
     public DateTime? IncorporationDate { get; set; }
+
+    [JsonPropertyName("sic_codes")]
+    public List<string> IndustryCodes { get; set; } = new List<string>();
+
+    [JsonPropertyName("website")]
+    public string? Website { get; set; } // From filing history if available
+
+    [JsonPropertyName("employees")]
+    public int? EstimatedEmployees { get; set; } // From accounts if available
+
+    [JsonPropertyName("description")] // Contains SIC codes and industry info
+    public string? IndustryDescription { get; set; }
+
+    [JsonPropertyName("charges")] // Contains charges
+    public string? Charges { get; set; }
+    
+    [JsonPropertyName("uk_establishments")] // Contains establishments
+    public string? UkEstablishments { get; set; }
 }
+
+public class Address
+{
+    [JsonPropertyName("address_line_1")]
+    public string? Line1 { get; set; }
+
+    [JsonPropertyName("address_line_2")]
+    public string? Line2 { get; set; }
+
+    [JsonPropertyName("locality")]
+    public string? Town { get; set; }
+
+    [JsonPropertyName("postal_code")]
+    public string? Postcode { get; set; }
+
+    [JsonPropertyName("country")]
+    public string? Country { get; set; }
+
+    public string FullAddress =>
+        string.Join(", ", new[] { Line1, Line2, Town, Postcode, Country }
+            .Where(s => !string.IsNullOrWhiteSpace(s)));
+}
+
