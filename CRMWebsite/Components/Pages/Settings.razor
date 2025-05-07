@@ -1,5 +1,419 @@
-﻿<h3>Settings</h3>
+﻿@page "/settings"
+@inject NavigationManager NavigationManager
+
+<div class="settings-container">
+    <div class="settings-header">
+        <button class="back-button" @onclick="NavigateBack">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <h2>Settings</h2>
+    </div>
+
+    <div class="settings-card">
+        <!-- Notification Preferences -->
+        <div class="settings-section">
+            <h3><i class="fas fa-bell"></i> Notification Preferences</h3>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h4>Email Notifications</h4>
+                    <p>Receive email alerts about saved companies</p>
+                </div>
+                <div class="setting-control">
+                    <label class="switch">
+                        <input type="checkbox" checked="@emailNotifications" @onchange="ToggleEmailNotifications" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h4>Placement Opportunities</h4>
+                    <p>Get notified about new companies matching your criteria</p>
+                </div>
+                <div class="setting-control">
+                    <label class="switch">
+                        <input type="checkbox" checked="@placementAlerts" @onchange="TogglePlacementAlerts" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Display Preferences -->
+        <div class="settings-section">
+            <h3><i class="fas fa-desktop"></i> Display Preferences</h3>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h4>Results Per Page</h4>
+                    <p>Number of companies shown in search results</p>
+                </div>
+                <div class="setting-control">
+                    <select class="form-select" @bind="resultsPerPage">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Preferences -->
+        <div class="settings-section">
+            <h3><i class="fas fa-user-graduate"></i> Student Preferences</h3>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h4>Preferred Industries</h4>
+                    <p>Select industries for work experience</p>
+                </div>
+                <div class="setting-control">
+                    <button class="btn btn-outline-primary" @onclick="ShowIndustryModal">
+                        Select Industries
+                    </button>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h4>Location Radius</h4>
+                    <p>Maximum distance from school (miles)</p>
+                </div>
+                <div class="setting-control">
+                    <input type="range" class="form-range" min="5" max="50" step="5" 
+                           value="locationRadius" @onchange="UpdateLocationRadius" />
+                    <span class="radius-value">@locationRadius miles</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Settings -->
+        <div class="settings-section">
+            <h3><i class="fas fa-user-cog"></i> Account Settings</h3>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h4>Change Password</h4>
+                    <p>Update your account password</p>
+                </div>
+                <div class="setting-control">
+                    <button class="btn btn-outline-secondary" @onclick="ShowPasswordModal">
+                        Change Password
+                    </button>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h4>Delete Account</h4>
+                    <p>Permanently remove your account</p>
+                </div>
+                <div class="setting-control">
+                    <button class="btn btn-outline-danger" @onclick="ShowDeleteAccountModal">
+                        Delete Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Industry Selection Modal -->
+@if (showIndustryModal)
+{
+
+    <div class="modal-backdrop show"></div>
+    <div class="modal show" tabindex="-1" style="display: block;">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-top: 80px;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Preferred Industries</h5>
+                    <button type="button" class="btn-close" @onclick="CloseIndustryModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="industry-list">
+                        @foreach (var industry in allIndustries)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" 
+                                       id="@industry.Value" checked="@industry.Selected"
+                                       @onchange="@((e) => ToggleIndustry(industry.Value, e.Value))" />
+                                <label class="form-check-label" for="@industry.Value">
+                                    @industry.Text
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseIndustryModal">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveIndustryPreferences">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
+    // Notification Settings
+    private bool emailNotifications = true;
+    private bool placementAlerts = true;
+    
+    // Display Settings
+    private bool darkMode = false;
+    private int resultsPerPage = 20;
+    
+    // Student Preferences
+    private int locationRadius = 15;
+    private bool showIndustryModal = false;
+    private List<IndustryOption> allIndustries = new List<IndustryOption>
+    {
+        new IndustryOption { Value = "tech", Text = "Technology" },
+        new IndustryOption { Value = "health", Text = "Healthcare" },
+        new IndustryOption { Value = "finance", Text = "Finance" },
+        new IndustryOption { Value = "education", Text = "Education" },
+        new IndustryOption { Value = "engineering", Text = "Engineering" },
+        new IndustryOption { Value = "creative", Text = "Creative Arts" },
+        new IndustryOption { Value = "hospitality", Text = "Hospitality" },
+        new IndustryOption { Value = "retail", Text = "Retail" }
+    };
+    
+    private class IndustryOption
+    {
+        public string Value { get; set; }
+        public string Text { get; set; }
+        public bool Selected { get; set; }
+    }
 
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void ToggleEmailNotifications(ChangeEventArgs e)
+    {
+        emailNotifications = (bool)e.Value;
+        // Save to storage/local settings
+    }
+
+    private void TogglePlacementAlerts(ChangeEventArgs e)
+    {
+        placementAlerts = (bool)e.Value;
+        // Save to storage/local settings
+    }
+
+    private void UpdateLocationRadius(ChangeEventArgs e)
+    {
+        locationRadius = int.Parse(e.Value.ToString());
+        // Save preference
+    }
+
+    private void ShowIndustryModal()
+    {
+        showIndustryModal = true;
+    }
+
+    private void CloseIndustryModal()
+    {
+        showIndustryModal = false;
+    }
+
+    private void ToggleIndustry(string industryValue, object isChecked)
+    {
+        var industry = allIndustries.FirstOrDefault(i => i.Value == industryValue);
+        if (industry != null)
+        {
+            industry.Selected = (bool)isChecked;
+        }
+    }
+
+    private void SaveIndustryPreferences()
+    {
+        // Save selected industries
+        showIndustryModal = false;
+    }
+
+    private void ShowPasswordModal()
+    {
+        // Implement password change modal
+    }
+
+    private void ShowDeleteAccountModal()
+    {
+        // Implement delete account confirmation
+    }
 }
+
+<style>
+    .settings-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .settings-header {
+        margin-bottom: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+    .back-button {
+        position: absolute;
+        left: 0;
+        background: none;
+        border: none;
+        color: #007bff;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .settings-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 25px;
+    }
+
+    .settings-section {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .settings-section h3 {
+        color: #444;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .setting-info h4 {
+        margin-bottom: 5px;
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .setting-info p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .setting-control {
+        min-width: 120px;
+        text-align: right;
+    }
+
+    /* Toggle switch styling */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+    }
+
+    input:checked + .slider {
+        background-color: #007bff;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+
+    .slider.round {
+        border-radius: 24px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+    /* Range input styling */
+    .form-range {
+        width: 150px;
+        margin-right: 10px;
+    }
+
+    .radius-value {
+        display: inline-block;
+        width: 60px;
+        text-align: center;
+    }
+
+    /* Modal styling */
+    .modal-backdrop {
+        opacity: 0.5;
+    }
+
+    .industry-list {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .form-check {
+        padding: 8px 0;
+    }
+
+    @@media (max-width: 768px) {
+        .settings-container {
+            padding: 15px;
+        }
+        
+        .back-button {
+            position: relative;
+            margin-bottom: 15px;
+            left: auto;
+        }
+
+        .setting-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .setting-control {
+            width: 100%;
+            text-align: left;
+        }
+    }
+</style>
