@@ -17,7 +17,7 @@
             <div class="setting-item">
                 <div class="setting-info">
                     <h4>Email Notifications</h4>
-                    <p>Receive email alerts about saved companies</p>
+                    <p>Receive email alerts about saved companies</p> 
                 </div>
                 <div class="setting-control">
                     <label class="switch">
@@ -183,14 +183,14 @@
     
     private class IndustryOption
     {
-        public string Value { get; set; }
-        public string Text { get; set; }
+        public string? Value { get; set; }
+        public string? Text { get; set; }
         public bool Selected { get; set; }
     }
 
     private void NavigateBack()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/home");
     }
 
     private void ToggleEmailNotifications(ChangeEventArgs e)
